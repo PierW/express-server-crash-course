@@ -14,7 +14,7 @@ const logger = (req, res, next) => {
 }
 
 // Get all posts
-router.get('/', logger, (req, res) => {
+router.get('/', logger, (req, res, next) => {
     const limit = parseInt(req.query.limit);
     if(!isNaN(limit) && limit > 0){
         res.status(200).json(posts.slice(0, limit));
@@ -23,18 +23,20 @@ router.get('/', logger, (req, res) => {
 });
 
 // Ottieni singolo post
-router.get('/:id', (req, res) => {
+router.get('/:id', (req, res, next) => {
     const id = parseInt(req.params.id);
     const post = posts.find((post) => post.id === id );
     if(!post){
-        return res.status(404).json({msg: 'Post non trovato'});
+        const error = new Error('Post non trovato');
+        error.status = 404;
+        return next(error);
     }
     res.status(200).json(post);
 
 });
 
 // Crea nuovo Post
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
 
     const newPost = {
         id : posts.length + 1,
@@ -42,7 +44,9 @@ router.post('/', (req, res) => {
     }
 
     if(!newPost.title){
-        return res.status(400).json({msg: 'Titolo assente'});
+        const error = new Error('Titolo assente');
+        error.status = 400;
+        return next(error);
     }
 
     posts.push(newPost);
@@ -50,17 +54,21 @@ router.post('/', (req, res) => {
 });
 
 // Update Post
-router.put('/:id', (req, res) => {
+router.put('/:id', (req, res, next) => {
 
     const id = parseInt(req.params.id);
     const post = posts.find((post) => post.id === id );
 
     if(!post){
-        return res.status(404).json({msg: 'Post non trovato'});
+        const error = new Error('Post non trovato');
+        error.status = 404;
+        return next(error);
     }
 
     if(!req.body.title){
-        return res.status(400).json({msg: 'Titolo assente'});
+        const error = new Error('Titolo assente');
+        error.status = 400;
+        return next(error);
     }
 
     post.title = req.body.title;
@@ -68,12 +76,14 @@ router.put('/:id', (req, res) => {
 });
 
 // Delete Post
-router.delete('/:id', (req, res) => {
+router.delete('/:id', (req, res, next) => {
     const id = parseInt(req.params.id);
     const post = posts.find((post) => post.id === id );
 
     if(!post){
-        return res.status(404).json({msg: 'Post non trovato'});
+        const error = new Error('Post non trovato');
+        error.status = 404;
+        return next(error);
     }
 
     posts = posts.filter((post) => post.id !== id );
