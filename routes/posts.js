@@ -7,9 +7,13 @@ let posts = [
     {id : 3, title: "Post numero tre"}
 ];
 
+// Middleware Route Level
+const logger = (req, res, next) => {
+    console.log(`${req.method} ${req.protocol}://${req.get('host')}${req.originalUrl}`);
+}
 
 // Get all posts
-router.get('/', (req, res) => {
+router.get('/', logger, (req, res) => {
     const limit = parseInt(req.query.limit);
     if(!isNaN(limit) && limit > 0){
         res.status(200).json(posts.slice(0, limit));
