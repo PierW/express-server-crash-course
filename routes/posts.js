@@ -9,7 +9,8 @@ let posts = [
 
 // Middleware Route Level
 const logger = (req, res, next) => {
-    console.log(`${req.method} ${req.protocol}://${req.get('host')}${req.originalUrl}`);
+    console.log(`${req.method} ${req.protocol}://${req.get('host')}${req.originalUrl} ROUTE LEVEL`);
+    next();
 }
 
 // Get all posts
