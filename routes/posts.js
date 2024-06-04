@@ -2,9 +2,9 @@ import express from 'express';
 const router = express.Router();
 
 let posts = [
-    {id : 1, name: "Post numero uno"},
-    {id : 2, name: "Post numero due"},
-    {id : 3, name: "Post numero tre"}
+    {id : 1, title: "Post numero uno"},
+    {id : 2, title: "Post numero due"},
+    {id : 3, title: "Post numero tre"}
 ];
 
 
@@ -44,4 +44,34 @@ router.post('/', (req, res) => {
     res.status(201).json(posts);
 });
 
+// Update Post
+router.put('/:id', (req, res) => {
+
+    const id = parseInt(req.params.id);
+    const post = posts.find((post) => post.id === id );
+
+    if(!post){
+        return res.status(404).json({msg: 'Post non trovato'});
+    }
+
+    if(!req.body.title){
+        return res.status(400).json({msg: 'Titolo assente'});
+    }
+
+    post.title = req.body.title;
+    res.status(200).json({msg: 'Post aggiornato'})
+});
+
+// Delete Post
+router.delete('/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+    const post = posts.find((post) => post.id === id );
+
+    if(!post){
+        return res.status(404).json({msg: 'Post non trovato'});
+    }
+
+    posts = posts.filter((post) => post.id !== id );
+    res.status(200).json({msg: 'Post Eliminato'}) 
+});
 export default router;
