@@ -3,9 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HomePage</title>
+    <title>Posts</title>
 </head>
 <body>
-    <h1>Homepage</h1>
+    <h1>Posts</h1>
+
+    <div class="form">
+        <form id="add-post-form">
+            <label for="title">Inserisci titolo:</label><br/>
+            <input type="text" name="title" id="title"><br />
+            <button type="submit">Inserisci Post</button>
+        </form>
+    </div>
+
+    <div class="posts">
+        <button id="get-posts-btn">Get Posts</button>
+        <div id="output"></div>
+    </div>
+
+    <script src="./js/main.js"></script>
 </body>
 </html>

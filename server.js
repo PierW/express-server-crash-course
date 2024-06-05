@@ -1,21 +1,17 @@
 import express from 'express';
 import path from 'path';
+import { fileURLToPath } from 'url';
 import posts from './routes/posts.js';
 import appLogger from './middleware/appLogger.js';
 import errorHandler from './middleware/error.js';
 import notFound from './middleware/notFound.js';
 const app = express();
 const port = process.env.PORT || 8000;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 
-
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-app.get('/about', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'about.html'));
-});
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Body Parser Middleware per leggere il body (Ora incluso in Express)
 app.use(express.json());
